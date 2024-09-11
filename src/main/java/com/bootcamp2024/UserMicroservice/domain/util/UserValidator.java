@@ -2,6 +2,7 @@ package com.bootcamp2024.UserMicroservice.domain.util;
 
 import com.bootcamp2024.UserMicroservice.domain.exception.AgeValidationException;
 import com.bootcamp2024.UserMicroservice.domain.exception.EmailValidationException;
+import com.bootcamp2024.UserMicroservice.domain.exception.IdentityDocumentValidationException;
 import com.bootcamp2024.UserMicroservice.domain.exception.PhoneValidationException;
 import com.bootcamp2024.UserMicroservice.domain.model.User;
 
@@ -29,7 +30,7 @@ public class UserValidator {
 
     public static void validateIdentityDocument(String identityDocument){
          if(!identityDocument.matches(UserValidatorConstants.IDENTITY_DOCUMENT_PATTERN)){
-            throw new PhoneValidationException(UserValidatorConstants.IDENTITY_DOCUMENT_NOT_IN_PATTERN_MESSAGE);
+            throw new IdentityDocumentValidationException(UserValidatorConstants.IDENTITY_DOCUMENT_NOT_IN_PATTERN_MESSAGE);
          }
     }
 
