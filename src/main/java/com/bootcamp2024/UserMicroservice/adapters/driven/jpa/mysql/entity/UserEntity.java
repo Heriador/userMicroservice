@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+import java.io.Serializable;
 import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "\"user\"")
@@ -14,7 +17,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity {
+public class UserEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +30,7 @@ public class UserEntity {
     private String lastName;
 
     @Column(nullable = false, unique = true)
-    private Long identityDocument;
+    private String identityDocument;
 
     @Column(nullable = false)
     private String phone;
@@ -41,8 +44,9 @@ public class UserEntity {
     @Column(nullable = false)
     private LocalDate birthDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private RoleEntity role;
+
 
 }

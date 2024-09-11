@@ -8,7 +8,7 @@ public class User {
     private Long id;
     private String name;
     private String lastName;
-    private Long identityDocument;
+    private String identityDocument;
     private String phone;
     private String email;
     private String password;
@@ -35,7 +35,7 @@ public class User {
         private Long id;
         private String name;
         private String lastName;
-        private Long identityDocument;
+        private String identityDocument;
         private String phone;
         private String email;
         private String password;
@@ -57,7 +57,7 @@ public class User {
             return this;
         }
 
-        public Builder identityDocument(Long identityDocument) {
+        public Builder identityDocument(String identityDocument) {
             this.identityDocument = identityDocument;
             return this;
         }
@@ -132,11 +132,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Long getIdentityDocument() {
+    public String getIdentityDocument() {
         return identityDocument;
     }
 
-    public void setIdentityDocument(Long identityDocument) {
+    public void setIdentityDocument(String identityDocument) {
         this.identityDocument = identityDocument;
     }
 

@@ -12,5 +12,6 @@ public interface IRoleEntityMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     Role toRole(RoleEntity roleEntity);
+    RoleEntity toRoleEntity(Role role);
 
 }

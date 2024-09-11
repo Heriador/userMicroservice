@@ -4,6 +4,7 @@ import com.bootcamp2024.UserMicroservice.domain.api.IUserServicePort;
 import com.bootcamp2024.UserMicroservice.domain.exception.UserAlreadyExistException;
 import com.bootcamp2024.UserMicroservice.domain.model.User;
 import com.bootcamp2024.UserMicroservice.domain.spi.IUserPersistencePort;
+import com.bootcamp2024.UserMicroservice.domain.util.UserValidator;
 
 
 public class UserUseCases implements IUserServicePort {
@@ -17,10 +18,11 @@ public class UserUseCases implements IUserServicePort {
 
     @Override
     public void saveWareHouseAssistantUser(User user) {
-        if(userPersistencePort.existsByEmail(user.getEmail())){
+        if(Boolean.TRUE.equals(userPersistencePort.existsByEmail(user.getEmail()))){
             throw new UserAlreadyExistException();
         }
 
+        UserValidator.validate(user);
 
 
         userPersistencePort.saveWareHouseAssistantUser(user);

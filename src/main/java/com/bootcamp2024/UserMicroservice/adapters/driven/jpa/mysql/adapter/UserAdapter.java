@@ -3,7 +3,6 @@ package com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.adapter;
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.entity.UserEntity;
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.mapper.IUserEntityMapper;
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.repository.IUserRepository;
-import com.bootcamp2024.UserMicroservice.domain.api.IUserServicePort;
 import com.bootcamp2024.UserMicroservice.domain.model.User;
 import com.bootcamp2024.UserMicroservice.domain.spi.IUserPersistencePort;
 import lombok.RequiredArgsConstructor;
