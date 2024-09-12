@@ -6,6 +6,8 @@ import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.mapper.IRoleE
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.mapper.IUserEntityMapper;
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.repository.IRoleRepository;
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.repository.IUserRepository;
+import com.bootcamp2024.UserMicroservice.configuration.EncryptionService;
+import com.bootcamp2024.UserMicroservice.domain.api.IEncryptionServicePort;
 import com.bootcamp2024.UserMicroservice.domain.api.IRoleServicePort;
 import com.bootcamp2024.UserMicroservice.domain.api.IUserServicePort;
 import com.bootcamp2024.UserMicroservice.domain.spi.IRolePersistancePort;
@@ -25,14 +27,20 @@ public class BeanConfiguration {
     private final IRoleRepository roleRepository;
     private final IRoleEntityMapper roleEntityMapper;
 
+
     @Bean
     public IUserPersistencePort userPersistencePort() {
         return new UserAdapter(userRepository, userEntityMapper);
     }
 
     @Bean
+    public IEncryptionServicePort encryptionServicePort() {
+        return new EncryptionService();
+    }
+
+    @Bean
     public IUserServicePort userServicePort() {
-        return new UserUseCases(userPersistencePort());
+        return new UserUseCases(userPersistencePort(), encryptionServicePort());
     }
 
     @Bean
