@@ -1,17 +1,16 @@
 package com.bootcamp2024.UserMicroservice.domain.usecases;
 
+import com.bootcamp2024.UserMicroservice.domain.api.IEncryptionServicePort;
 import com.bootcamp2024.UserMicroservice.domain.exception.*;
-import com.bootcamp2024.UserMicroservice.domain.model.Role;
 import com.bootcamp2024.UserMicroservice.domain.model.User;
 import com.bootcamp2024.UserMicroservice.domain.spi.IUserPersistencePort;
+import com.bootcamp2024.UserMicroservice.factory.UserFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,6 +24,9 @@ class UserUseCasesTest {
     @Mock
     private IUserPersistencePort userPersistencePort;
 
+    @Mock
+    private IEncryptionServicePort encryptionServicePort;
+
     @InjectMocks
     private UserUseCases userUseCases;
 
@@ -33,8 +35,7 @@ class UserUseCasesTest {
     @Test
     void saveWareHouseAssistantUser_UserAlreadyExists_ThrowsException() {
         // Arrange
-        User user = new User();
-        user.setEmail("test@example.com");
+        User user = UserFactory.getUser();
 
         when(userPersistencePort.existsByEmail(user.getEmail())).thenReturn(true);
 
@@ -47,18 +48,11 @@ class UserUseCasesTest {
     @Test
     void saveWareHouseAssistantUser_UserDoesNotExist_SavesUser() {
         // Arrange
-        User user = new User();
-        user.setId(null);
-        user.setEmail("test@example.com");
-        user.setName("Test");
-        user.setLastName("Test");
-        user.setIdentityDocument("12345678");
-        user.setPhone("+12345678");
-        user.setPassword("12345678");
-        user.setBirthDate(LocalDate.of(2001,4,22));
-        user.setRole(Mockito.mock(Role.class));
+        User user = UserFactory.getUser();
 
         when(userPersistencePort.existsByEmail(user.getEmail())).thenReturn(false);
+        when(encryptionServicePort.encode(user.getPassword())).thenReturn("encryptedPassword");
+
 
         // Act
         userUseCases.saveWareHouseAssistantUser(user);
@@ -70,14 +64,7 @@ class UserUseCasesTest {
     @Test
     void saveWareHouseAssistantUser_AgeValidation_ThrowsException() {
         // Arrange
-        User user = new User();
-        user.setEmail("test@example.com");
-        user.setName("Test");
-        user.setLastName("Test");
-        user.setIdentityDocument("12345678");
-        user.setPhone("12345678");
-        user.setPassword("12345678");
-        user.setBirthDate(LocalDate.of(2007,4,22));
+        User user = UserFactory.userWithInvalidAge();
 
         when(userPersistencePort.existsByEmail(user.getEmail())).thenReturn(false);
 
@@ -91,14 +78,7 @@ class UserUseCasesTest {
     @Test
     void saveWareHouseAssistantUser_EmailValidation_ThrowsException() {
         // Arrange
-        User user = new User();
-        user.setEmail("testexample.com");
-        user.setName("Test");
-        user.setLastName("Test");
-        user.setIdentityDocument("12345678");
-        user.setPhone("12345678");
-        user.setPassword("12345678");
-        user.setBirthDate(LocalDate.of(2001,4,22));
+        User user = UserFactory.userWithInvalidEmail();
 
         when(userPersistencePort.existsByEmail(user.getEmail())).thenReturn(false);
 
@@ -112,14 +92,7 @@ class UserUseCasesTest {
     @Test
     void saveWareHouseAssistantUser_IdentityDocumentValidation_ThrowsException() {
         // Arrange
-        User user = new User();
-        user.setEmail("test@example.com");
-        user.setName("Test");
-        user.setLastName("Test");
-        user.setIdentityDocument("cc12345678");
-        user.setPhone("12345678");
-        user.setPassword("12345678");
-        user.setBirthDate(LocalDate.of(2001,4,22));
+        User user = UserFactory.userWithInvalidIdentityDocument();
 
         when(userPersistencePort.existsByEmail(user.getEmail())).thenReturn(false);
 
@@ -133,14 +106,7 @@ class UserUseCasesTest {
     @Test
     void saveWareHouseAssistantUser_PhoneValidation_ThrowsException() {
         // Arrange
-        User user = new User();
-        user.setEmail("test@example.com");
-        user.setName("Test");
-        user.setLastName("Test");
-        user.setIdentityDocument("12345678");
-        user.setPhone("+123456789124124");
-        user.setPassword("12345678");
-        user.setBirthDate(LocalDate.of(2001,4,22));
+        User user = UserFactory.userWithInvalidPhone();
 
         when(userPersistencePort.existsByEmail(user.getEmail())).thenReturn(false);
 

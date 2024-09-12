@@ -17,6 +17,7 @@ public class UserUseCases implements IUserServicePort {
     public UserUseCases(IUserPersistencePort userPersistencePort, IEncryptionServicePort encryptionServicePort) {
         this.userPersistencePort = userPersistencePort;
         this.encryptionServicePort = encryptionServicePort;
+
     }
 
     @Override

@@ -38,6 +38,8 @@ public class BeanConfiguration {
         return new EncryptionService();
     }
 
+
+
     @Bean
     public IUserServicePort userServicePort() {
         return new UserUseCases(userPersistencePort(), encryptionServicePort());

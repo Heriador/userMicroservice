@@ -2,6 +2,7 @@ package com.bootcamp2024.UserMicroservice.domain.usecases;
 
 import com.bootcamp2024.UserMicroservice.domain.model.Role;
 import com.bootcamp2024.UserMicroservice.domain.spi.IRolePersistancePort;
+import com.bootcamp2024.UserMicroservice.factory.RoleFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,10 +32,7 @@ class RolUseCaseTest {
     void getRole_ExistingRole_ReturnsRole() {
         // Arrange
         String roleName = "ADMIN";
-        Role expectedRole = new Role();
-        expectedRole.setId(1L);
-        expectedRole.setName(roleName);
-        expectedRole.setDescription("Administrator");
+        Role expectedRole = RoleFactory.getRole();
 
         when(rolePersistencePort.findByName(roleName)).thenReturn(expectedRole);
 
@@ -42,7 +40,11 @@ class RolUseCaseTest {
         Role actualRole = rolUseCase.getRole(roleName);
 
         // Assert
-        assertEquals(expectedRole, actualRole);
+        assertAll(
+                () -> assertEquals(expectedRole.getId(), actualRole.getId()),
+                () -> assertEquals(expectedRole.getName(), actualRole.getName()),
+                () -> assertEquals(expectedRole.getDescription(), actualRole.getDescription())
+        );
         verify(rolePersistencePort, times(1)).findByName(roleName);
     }
 
@@ -57,7 +59,7 @@ class RolUseCaseTest {
         Role actualRole = rolUseCase.getRole(roleName);
 
         // Assert
-        assertEquals(null, actualRole);
+        assertNull(actualRole);
         verify(rolePersistencePort, times(1)).findByName(roleName);
     }
 
