@@ -1,7 +1,7 @@
 package com.bootcamp2024.UserMicroservice.domain.usecases;
 
 import com.bootcamp2024.UserMicroservice.domain.model.Role;
-import com.bootcamp2024.UserMicroservice.domain.spi.IRolePersistancePort;
+import com.bootcamp2024.UserMicroservice.domain.spi.IRolePersistencePort;
 import com.bootcamp2024.UserMicroservice.factory.RoleFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.times;
 class RolUseCaseTest {
 
     @Mock
-    private IRolePersistancePort rolePersistencePort;
+    private IRolePersistencePort rolePersistencePort;
 
     @InjectMocks
     private RolUseCase rolUseCase;

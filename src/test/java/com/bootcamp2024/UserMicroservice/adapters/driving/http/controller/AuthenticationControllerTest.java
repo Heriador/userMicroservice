@@ -2,7 +2,6 @@ package com.bootcamp2024.UserMicroservice.adapters.driving.http.controller;
 
 import com.bootcamp2024.UserMicroservice.adapters.driving.http.dto.request.AuthenticationRequest;
 import com.bootcamp2024.UserMicroservice.adapters.driving.http.dto.response.AuthenticationResponse;
-import com.bootcamp2024.UserMicroservice.configuration.security.AuthenticationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -5,4 +5,5 @@ import com.bootcamp2024.UserMicroservice.adapters.driving.http.dto.response.User
 
 public interface IUserHandler {
     UserResponse saveWareHouseAssistantUser(CreateUser user);
+
 }

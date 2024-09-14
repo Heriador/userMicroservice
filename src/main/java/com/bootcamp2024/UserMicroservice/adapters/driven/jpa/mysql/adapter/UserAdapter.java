@@ -6,8 +6,10 @@ import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.repository.IU
 import com.bootcamp2024.UserMicroservice.domain.model.User;
 import com.bootcamp2024.UserMicroservice.domain.spi.IUserPersistencePort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
 public class UserAdapter implements IUserPersistencePort {
 
     private final IUserRepository userRepository;

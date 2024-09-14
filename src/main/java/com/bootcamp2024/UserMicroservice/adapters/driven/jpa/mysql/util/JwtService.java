@@ -1,4 +1,4 @@
-package com.bootcamp2024.UserMicroservice.configuration.security;
+package com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.util;
 
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.entity.UserEntity;
 import io.jsonwebtoken.Claims;
@@ -53,6 +53,22 @@ public class JwtService {
 
     private Claims extractAllClaims(String jwt) {
         return Jwts.parserBuilder().setSigningKey(generateKey()).build().parseClaimsJws(jwt).getBody();
+    }
+
+    public boolean isValid(String jwt) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(generateKey())
+                    .build()
+                    .parseClaimsJws(jwt);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isExpired(String jwt) {
+        return extractAllClaims(jwt).getExpiration().before(new Date());
     }
 
 }

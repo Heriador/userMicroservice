@@ -20,5 +20,6 @@ public interface IUserEntityMapper {
     @Mapping(source = "birthDate", target = "birthDate")
     @Mapping(source = "role", target = "role")
     UserEntity toUserEntity(User user);
+    User toUser(UserEntity userEntity);
 
 }
