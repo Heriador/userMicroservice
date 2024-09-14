@@ -49,7 +49,7 @@ public class BeanConfiguration {
 
     @Bean
     public IUserServicePort userServicePort() {
-        return new UserUseCases(userPersistencePort(), encryptionServicePort());
+        return new UserUseCases(userPersistencePort(), encryptionServicePort(), rolPersistancePort());
     }
 
     @Bean
@@ -64,7 +64,7 @@ public class BeanConfiguration {
 
     @Bean
     public IAuthPersistencePort authPersistancePort() {
-        return new AuthAdapter(authenticationManager, jwtService, userEntityMapper);
+        return new AuthAdapter(authenticationManager, jwtService, rolPersistancePort());
     }
 
     @Bean

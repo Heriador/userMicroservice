@@ -13,7 +13,7 @@ public class User {
     private String email;
     private String password;
     private LocalDate birthDate;
-    private Role role;
+    private Long roleId;
 
     public User(){
 
@@ -28,7 +28,7 @@ public class User {
         this.email = builder.email;
         this.password = builder.password;
         this.birthDate = builder.birthDate;
-        this.role = builder.role;
+        this.roleId = builder.roleId;
     }
 
     public static class Builder {
@@ -40,7 +40,7 @@ public class User {
         private String email;
         private String password;
         private LocalDate birthDate;
-        private Role role;
+        private Long roleId;
 
         public Builder id(Long id) {
             this.id = id;
@@ -82,8 +82,8 @@ public class User {
             return this;
         }
 
-        public Builder role(Role roleId) {
-            this.role = roleId;
+        public Builder roleId(Long roleId) {
+            this.roleId = roleId;
             return this;
         }
 
@@ -156,11 +156,11 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleId(Long roleid) {
+        this.roleId = roleid;
     }
 }

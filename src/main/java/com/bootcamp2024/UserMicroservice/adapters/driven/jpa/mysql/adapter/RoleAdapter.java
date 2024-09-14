@@ -16,10 +16,16 @@ public class RoleAdapter implements IRolePersistencePort {
     private final IRoleEntityMapper roleEntityMapper;
 
     @Override
-    public Role findByName(String roleName) {
+    public Long getRoleId(String roleName) {
         RoleEntity roleEntity = roleRepository.findByName(roleName);
+
+        return roleEntity.getId();
+    }
+
+    @Override
+    public Role getRoleName(Long roleId) {
+        RoleEntity roleEntity = roleRepository.findById(roleId).orElseThrow();
 
         return roleEntityMapper.toRole(roleEntity);
     }
-
 }

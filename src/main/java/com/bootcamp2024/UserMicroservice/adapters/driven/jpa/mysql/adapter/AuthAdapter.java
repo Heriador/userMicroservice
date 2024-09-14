@@ -1,12 +1,12 @@
 package com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.adapter;
 
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.entity.CustomUserDetails;
-import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.entity.UserEntity;
-import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.mapper.IUserEntityMapper;
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.util.AuthConstants;
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.util.JwtService;
+import com.bootcamp2024.UserMicroservice.domain.model.Role;
 import com.bootcamp2024.UserMicroservice.domain.model.User;
 import com.bootcamp2024.UserMicroservice.domain.spi.IAuthPersistencePort;
+import com.bootcamp2024.UserMicroservice.domain.spi.IRolePersistencePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,7 +21,7 @@ public class AuthAdapter implements IAuthPersistencePort {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final IUserEntityMapper userEntityMapper;
+    private final IRolePersistencePort rolePersistencePort;
 
     @Override
     public User authenticate(String email, String password) {
@@ -29,9 +29,14 @@ public class AuthAdapter implements IAuthPersistencePort {
                 new UsernamePasswordAuthenticationToken(email, password)
         );
 
-        CustomUserDetails user = (CustomUserDetails) authUser.getPrincipal();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authUser.getPrincipal();
 
-        return userEntityMapper.toUser(user.getUserEntity());
+        User user = new User();
+        user.setId(customUserDetails.getUserEntity().getId());
+        user.setEmail(customUserDetails.getUsername());
+        user.setRoleId(customUserDetails.getUserEntity().getRole().getId());
+
+        return user;
     }
 
     @Override
@@ -53,15 +58,13 @@ public class AuthAdapter implements IAuthPersistencePort {
     @Override
     public String generateToken(User user) {
 
-        UserEntity userEntity = userEntityMapper.toUserEntity(user);
-
-        return jwtService.generateToken(userEntity, generateExtraClaims(userEntity));
+        return jwtService.generateToken(user, generateExtraClaims(user));
     }
 
-    private Map<String, Object> generateExtraClaims(UserEntity user) {
+    private Map<String, Object> generateExtraClaims(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put(AuthConstants.EMAIL_KEY, user.getEmail());
-        extraClaims.put(AuthConstants.AUTHORITI_KEY, AuthConstants.ROLE_PREFIX+user.getRole().getName());
+        Role role = rolePersistencePort.getRoleName(user.getRoleId());
+        extraClaims.put(AuthConstants.AUTHORITIES_KEY, AuthConstants.ROLE_PREFIX+role.getName());
 
 
         return extraClaims;

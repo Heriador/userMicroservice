@@ -26,8 +26,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ExceptionResponse> handleUserNotFoundException(AuthenticationException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ExceptionResponse(String.format(ex.getMessage()),HttpStatus.NOT_FOUND.toString(), LocalDateTime.now()));
+    public ResponseEntity<ExceptionResponse> handleAuthenticationException(AuthenticationException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionResponse(String.format(ex.getMessage()),HttpStatus.NOT_FOUND.toString(), LocalDateTime.now()));
     }
 
     @ExceptionHandler(AgeValidationException.class)

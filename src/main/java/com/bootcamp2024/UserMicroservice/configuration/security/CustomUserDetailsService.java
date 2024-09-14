@@ -21,4 +21,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .map(CustomUserDetails::new)
                 .orElseThrow(() -> new AuthenticationException(AuthenticationConstants.INVALID_CREDENTIALS_EXCEPTION_MESSAGE));
     }
+
+    public UserDetails loadUserById(Long id) {
+        return userRepository.findById(id)
+                .map(CustomUserDetails::new)
+                .orElseThrow(() -> new AuthenticationException(AuthenticationConstants.INVALID_CREDENTIALS_EXCEPTION_MESSAGE));
+    }
 }
