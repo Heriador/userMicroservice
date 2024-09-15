@@ -33,35 +33,65 @@ class RoleAdapterTest {
     }
 
     @Test
-    void findByName_ExistingRole_ReturnsRole() {
+    void getRoleId_ExistingRole_ReturnsRoleId() {
         // Arrange
         String roleName = "ADMIN";
         RoleEntity roleEntity = RoleFactory.getRoleEntity();
         Role expectedRole = RoleFactory.getRole();
 
         when(roleRepository.findByName(roleName)).thenReturn(roleEntity);
-        when(roleEntityMapper.toRole(roleEntity)).thenReturn(expectedRole);
 
         // Act
-        Role actualRole = roleAdapter.findByName(roleName);
+        Long actualRoleId = roleAdapter.getRoleId(roleName);
 
         // Assert
-        assertEquals(expectedRole, actualRole);
+        assertEquals(expectedRole.getId(), actualRoleId);
         verify(roleRepository, times(1)).findByName(roleName);
     }
 
     @Test
-    void findByName_NonExistingRole_ReturnsNull() {
+    void getRoleId_NonExistingRole_ReturnsNull() {
         // Arrange
         String roleName = "NON_EXISTENT_ROLE";
 
         when(roleRepository.findByName(roleName)).thenReturn(null);
 
-        // Act
-        Role actualRole = roleAdapter.findByName(roleName);
 
-        // Assert
-        assertNull(actualRole);
+
+        assertThrows(NullPointerException.class, () -> roleAdapter.getRoleId(roleName));
+
         verify(roleRepository, times(1)).findByName(roleName);
     }
+
+    @Test
+    void getRoleName_ExistingRole_ReturnsRole() {
+        // Arrange
+        Long roleId = 1L;
+        RoleEntity roleEntity = RoleFactory.getRoleEntity();
+        Role expectedRole = RoleFactory.getRole();
+
+        when(roleRepository.findById(roleId)).thenReturn(java.util.Optional.of(roleEntity));
+        when(roleEntityMapper.toRole(roleEntity)).thenReturn(expectedRole);
+
+        // Act
+        Role actualRole = roleAdapter.getRoleName(roleId);
+
+        // Assert
+        assertEquals(expectedRole, actualRole);
+        verify(roleRepository, times(1)).findById(roleId);
+    }
+
+    @Test
+    void getRoleName_NonExistingRole_ThrowsException() {
+        // Arrange
+        Long roleId = 1L;
+
+        when(roleRepository.findById(roleId)).thenReturn(java.util.Optional.empty());
+
+        // Act & Assert
+        assertThrows(Exception.class, () -> roleAdapter.getRoleName(roleId));
+
+        verify(roleRepository, times(1)).findById(roleId);
+    }
+
 }

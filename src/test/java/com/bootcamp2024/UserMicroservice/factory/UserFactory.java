@@ -24,7 +24,7 @@ public class UserFactory {
                 .email("email@gmail.com")
                 .password("password")
                 .birthDate(LocalDate.of(2001,4,22))
-                .role(RoleFactory.getWarehouseAss())
+                .roleId(RoleFactory.getWarehouseAss().getId())
                 .phone("+57896145321")
                 .build();
 
@@ -79,7 +79,7 @@ public class UserFactory {
         userInvalidEmail.setEmail("invalidEmail");
         userInvalidEmail.setPassword(user.getPassword());
         userInvalidEmail.setBirthDate(user.getBirthDate());
-        userInvalidEmail.setRole(user.getRole());
+        userInvalidEmail.setRoleId(user.getRoleId());
         userInvalidEmail.setPhone(user.getPhone());
         userInvalidEmail.setIdentityDocument(user.getIdentityDocument());
         userInvalidEmail.setLastName(user.getLastName());
@@ -94,7 +94,7 @@ public class UserFactory {
         userInvalidPhone.setPhone("invalidPhone");
         userInvalidPhone.setPassword(user.getPassword());
         userInvalidPhone.setBirthDate(user.getBirthDate());
-        userInvalidPhone.setRole(user.getRole());
+        userInvalidPhone.setRoleId(user.getRoleId());
         userInvalidPhone.setIdentityDocument(user.getIdentityDocument());
         userInvalidPhone.setLastName(user.getLastName());
         userInvalidPhone.setName(user.getName());
@@ -109,7 +109,7 @@ public class UserFactory {
         userInvalidIdentityDocument.setIdentityDocument("invalidIdentityDocument");
         userInvalidIdentityDocument.setPassword(user.getPassword());
         userInvalidIdentityDocument.setBirthDate(user.getBirthDate());
-        userInvalidIdentityDocument.setRole(user.getRole());
+        userInvalidIdentityDocument.setRoleId(user.getRoleId());
         userInvalidIdentityDocument.setPhone(user.getPhone());
         userInvalidIdentityDocument.setLastName(user.getLastName());
         userInvalidIdentityDocument.setName(user.getName());
@@ -122,7 +122,7 @@ public class UserFactory {
         User userInvalidAge = new User();
         userInvalidAge.setBirthDate(LocalDate.now().minusYears(5));
         userInvalidAge.setPassword(user.getPassword());
-        userInvalidAge.setRole(user.getRole());
+        userInvalidAge.setRoleId(user.getRoleId());
         userInvalidAge.setPhone(user.getPhone());
         userInvalidAge.setIdentityDocument(user.getIdentityDocument());
         userInvalidAge.setLastName(user.getLastName());

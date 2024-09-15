@@ -3,7 +3,9 @@ package com.bootcamp2024.UserMicroservice.domain.usecases;
 import com.bootcamp2024.UserMicroservice.domain.api.IEncryptionServicePort;
 import com.bootcamp2024.UserMicroservice.domain.exception.*;
 import com.bootcamp2024.UserMicroservice.domain.model.User;
+import com.bootcamp2024.UserMicroservice.domain.spi.IRolePersistencePort;
 import com.bootcamp2024.UserMicroservice.domain.spi.IUserPersistencePort;
+import com.bootcamp2024.UserMicroservice.factory.RoleFactory;
 import com.bootcamp2024.UserMicroservice.factory.UserFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +28,9 @@ class UserUseCasesTest {
 
     @Mock
     private IEncryptionServicePort encryptionServicePort;
+
+    @Mock
+    private IRolePersistencePort rolePersistencePort;
 
     @InjectMocks
     private UserUseCases userUseCases;
@@ -52,7 +57,9 @@ class UserUseCasesTest {
 
         when(userPersistencePort.existsByEmail(user.getEmail())).thenReturn(false);
         when(encryptionServicePort.encode(user.getPassword())).thenReturn("encryptedPassword");
+        when(rolePersistencePort.getRoleId(RoleFactory.getWarehouseAss().getName())).thenReturn(RoleFactory.getWarehouseAss().getId());
 
+        doNothing().when(userPersistencePort).saveWareHouseAssistantUser(user);
 
         // Act
         userUseCases.saveWareHouseAssistantUser(user);

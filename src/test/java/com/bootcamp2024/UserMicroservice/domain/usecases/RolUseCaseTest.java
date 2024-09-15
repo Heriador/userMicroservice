@@ -34,18 +34,14 @@ class RolUseCaseTest {
         String roleName = "ADMIN";
         Role expectedRole = RoleFactory.getRole();
 
-        when(rolePersistencePort.findByName(roleName)).thenReturn(expectedRole);
+        when(rolePersistencePort.getRoleId(roleName)).thenReturn(expectedRole.getId());
 
         // Act
-        Role actualRole = rolUseCase.getRole(roleName);
+        Long actualRoleId = rolUseCase.getRoleId(roleName);
 
         // Assert
-        assertAll(
-                () -> assertEquals(expectedRole.getId(), actualRole.getId()),
-                () -> assertEquals(expectedRole.getName(), actualRole.getName()),
-                () -> assertEquals(expectedRole.getDescription(), actualRole.getDescription())
-        );
-        verify(rolePersistencePort, times(1)).findByName(roleName);
+        assertEquals(expectedRole.getId(), actualRoleId);
+        verify(rolePersistencePort, times(1)).getRoleId(roleName);
     }
 
     @Test
@@ -53,14 +49,14 @@ class RolUseCaseTest {
         // Arrange
         String roleName = "NON_EXISTENT_ROLE";
 
-        when(rolePersistencePort.findByName(roleName)).thenReturn(null);
+        when(rolePersistencePort.getRoleId(roleName)).thenReturn(null);
 
         // Act
-        Role actualRole = rolUseCase.getRole(roleName);
+        Long actualRoleId = rolUseCase.getRoleId(roleName);
 
         // Assert
-        assertNull(actualRole);
-        verify(rolePersistencePort, times(1)).findByName(roleName);
+        assertNull(actualRoleId);
+        verify(rolePersistencePort, times(1)).getRoleId(roleName);
     }
 
 }
