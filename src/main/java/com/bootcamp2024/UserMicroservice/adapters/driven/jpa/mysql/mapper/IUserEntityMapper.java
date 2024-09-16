@@ -1,5 +1,6 @@
 package com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.mapper;
 
+import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.entity.RoleEntity;
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.entity.UserEntity;
 import com.bootcamp2024.UserMicroservice.domain.model.User;
 import org.mapstruct.Mapper;
@@ -18,7 +19,13 @@ public interface IUserEntityMapper {
     @Mapping(source = "identityDocument", target = "identityDocument")
     @Mapping(source = "phone", target = "phone")
     @Mapping(source = "birthDate", target = "birthDate")
-    @Mapping(source = "role", target = "role")
+    @Mapping(source = "roleId", target = "role")
     UserEntity toUserEntity(User user);
+
+    default RoleEntity map(Long roleId) {
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setId(roleId);
+        return roleEntity;
+    }
 
 }

@@ -2,7 +2,8 @@ package com.bootcamp2024.UserMicroservice.adapters.driving.http.controller;
 
 import com.bootcamp2024.UserMicroservice.adapters.driving.http.dto.request.AuthenticationRequest;
 import com.bootcamp2024.UserMicroservice.adapters.driving.http.dto.response.AuthenticationResponse;
-import com.bootcamp2024.UserMicroservice.configuration.security.AuthenticationService;
+import com.bootcamp2024.UserMicroservice.adapters.driving.http.handler.AuthHandler;
+import com.bootcamp2024.UserMicroservice.factory.AuthFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,13 +11,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationControllerTest {
     @Mock
-    private AuthenticationService authenticationService;
+    private AuthHandler authHandler;
 
     @InjectMocks
     private AuthenticationController authenticationController;
@@ -25,16 +28,17 @@ class AuthenticationControllerTest {
     @Test
     void login_ValidRequest_ReturnsAuthenticationResponse() {
         // Arrange
-        AuthenticationRequest request = new AuthenticationRequest();
-        AuthenticationResponse expectedResponse = new AuthenticationResponse();
+        AuthenticationRequest request = AuthFactory.getAuthenticationRequest();
+        AuthenticationResponse response = AuthFactory.getAuthenticationResponse();
 
-        when(authenticationService.login(request)).thenReturn(expectedResponse);
+        when(authHandler.login(request)).thenReturn(response);
 
         // Act
-        ResponseEntity<AuthenticationResponse> response = authenticationController.login(request);
+        ResponseEntity<AuthenticationResponse> actualResponse = authenticationController.login(request);
 
-        // Assert
-        assertEquals(ResponseEntity.ok(expectedResponse), response);
-        verify(authenticationService, times(1)).login(request);
+
+        assertEquals(response.getJwt(), Objects.requireNonNull(actualResponse.getBody()).getJwt());
+
+        verify(authHandler, times(1)).login(request);
     }
 }

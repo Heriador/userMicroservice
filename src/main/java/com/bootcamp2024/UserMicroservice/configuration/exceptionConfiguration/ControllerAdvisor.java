@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.bootcamp2024.UserMicroservice.configuration.util.ErrorConstants.*;
+import static com.bootcamp2024.UserMicroservice.configuration.util.AuthenticationConstants.*;
 
 @RestControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
@@ -23,6 +23,11 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserAlreadyExistException.class)
     public ResponseEntity<ExceptionResponse> handleUserAlreadyExistException(UserAlreadyExistException ex){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ExceptionResponse(String.format(USER_ALREADY_EXISTS_EXCEPTION_MESSAGE),HttpStatus.CONFLICT.toString(), LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ExceptionResponse> handleAuthenticationException(AuthenticationException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ExceptionResponse(String.format(ex.getMessage()),HttpStatus.NOT_FOUND.toString(), LocalDateTime.now()));
     }
 
     @ExceptionHandler(AgeValidationException.class)

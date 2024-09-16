@@ -4,11 +4,8 @@ import com.bootcamp2024.UserMicroservice.adapters.driving.http.dto.request.Creat
 import com.bootcamp2024.UserMicroservice.adapters.driving.http.dto.response.UserResponse;
 import com.bootcamp2024.UserMicroservice.adapters.driving.http.mapper.IUserRequestMapper;
 import com.bootcamp2024.UserMicroservice.adapters.driving.http.mapper.IUserResponseMapper;
-import com.bootcamp2024.UserMicroservice.domain.api.IRoleServicePort;
 import com.bootcamp2024.UserMicroservice.domain.api.IUserServicePort;
 import com.bootcamp2024.UserMicroservice.domain.model.User;
-import com.bootcamp2024.UserMicroservice.domain.util.RoleConstant;
-import com.bootcamp2024.UserMicroservice.factory.RoleFactory;
 import com.bootcamp2024.UserMicroservice.factory.UserFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,9 +20,6 @@ import static org.mockito.Mockito.*;
 class UserHandlerTest {
     @Mock
     private IUserServicePort userServicePort;
-
-    @Mock
-    private IRoleServicePort roleServicePort;
 
     @Mock
     private IUserRequestMapper userRequestMapper;
@@ -45,7 +39,9 @@ class UserHandlerTest {
         UserResponse userResponse = UserFactory.getUserResponse();
 
         when(userRequestMapper.toUser(createUser)).thenReturn(user);
-        when(roleServicePort.getRole(RoleConstant.WAREHOUSE_ASSISTANT.toString())).thenReturn(RoleFactory.getWarehouseAss());
+
+        doNothing().when(userServicePort).saveWareHouseAssistantUser(user);
+
         when(userResponseMapper.userToUserResponse(user)).thenReturn(userResponse);
 
         // Act

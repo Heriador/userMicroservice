@@ -1,20 +1,19 @@
 package com.bootcamp2024.UserMicroservice.domain.usecases;
 
 import com.bootcamp2024.UserMicroservice.domain.api.IRoleServicePort;
-import com.bootcamp2024.UserMicroservice.domain.model.Role;
-import com.bootcamp2024.UserMicroservice.domain.spi.IRolePersistancePort;
+import com.bootcamp2024.UserMicroservice.domain.spi.IRolePersistencePort;
 
 public class RolUseCase implements IRoleServicePort {
 
-    private final IRolePersistancePort rolPersistancePort;
+    private final IRolePersistencePort rolPersistencePort;
 
-    public RolUseCase(IRolePersistancePort rolPersistancePort) {
-        this.rolPersistancePort = rolPersistancePort;
+    public RolUseCase(IRolePersistencePort rolPersistencePort) {
+        this.rolPersistencePort = rolPersistencePort;
     }
 
+    @Override
+    public Long getRoleId(String roleName) {
 
-    public Role getRole(String roleName) {
-
-        return rolPersistancePort.findByName(roleName);
+        return rolPersistencePort.getRoleId(roleName);
     }
 }

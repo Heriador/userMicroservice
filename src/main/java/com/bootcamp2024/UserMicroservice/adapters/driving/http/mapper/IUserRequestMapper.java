@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 public interface IUserRequestMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "roleId", ignore = true)
     @Mapping(source = "birthDate", target = "birthDate", qualifiedByName = "stringToLocalDate")
     User toUser(CreateUser createUser);
 

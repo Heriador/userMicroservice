@@ -7,6 +7,7 @@ public class UserValidatorConstants {
     public static final String IDENTITY_DOCUMENT_NOT_IN_PATTERN_MESSAGE = "Identity document must be a number";
     public static final String EMAIL_NOT_IN_PATTERN_MESSAGE = "Email must be valid";
     public static final String INVALID_AGE_MESSAGE = "User must be at least 18 years old";
+    public static final String INVALID_CREDENTIALS_MESSAGE = "Invalid credentials";
 
 
     public static final int MINIMUM_AGE = 18;

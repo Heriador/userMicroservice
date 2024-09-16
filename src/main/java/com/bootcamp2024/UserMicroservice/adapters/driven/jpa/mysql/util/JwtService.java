@@ -1,6 +1,6 @@
-package com.bootcamp2024.UserMicroservice.configuration.security;
+package com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.util;
 
-import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.entity.UserEntity;
+import com.bootcamp2024.UserMicroservice.domain.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -22,14 +22,14 @@ public class JwtService {
     @Value("${security.jwt.secret-key}")
     private String SECRET_KEY;
 
-    public String generateToken(UserEntity user, Map<String, Object> extraClaims) {
+    public String generateToken(User user, Map<String, Object> extraClaims) {
 
         Date issuedAt = new Date(System.currentTimeMillis());
         Date expiration = new Date(issuedAt.getTime() + (EXPIRATION_MINUTES * 60 * 1000));
 
         return Jwts.builder()
                 .setClaims(extraClaims)
-                .setSubject(user.getEmail())
+                .setSubject(user.getId().toString())
                 .setIssuedAt(issuedAt)
                 .setExpiration(expiration)
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
@@ -45,7 +45,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    public String extractEmail(String jwt) {
+    public String extractUsername(String jwt) {
 
         return extractAllClaims(jwt).getSubject();
 
@@ -53,6 +53,22 @@ public class JwtService {
 
     private Claims extractAllClaims(String jwt) {
         return Jwts.parserBuilder().setSigningKey(generateKey()).build().parseClaimsJws(jwt).getBody();
+    }
+
+    public boolean isValid(String jwt) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(generateKey())
+                    .build()
+                    .parseClaimsJws(jwt);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isExpired(String jwt) {
+        return extractAllClaims(jwt).getExpiration().before(new Date());
     }
 
 }
