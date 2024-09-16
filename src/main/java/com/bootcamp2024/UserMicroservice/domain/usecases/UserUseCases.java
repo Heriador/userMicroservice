@@ -33,13 +33,24 @@ public class UserUseCases implements IUserServicePort {
         }
 
         UserValidator.validate(user);
-        user.setId(rolePersistencePort.getRoleId(RoleConstant.WAREHOUSE_ASSISTANT.toString()));
+        user.setRoleId(rolePersistencePort.getRoleId(RoleConstant.WAREHOUSE_ASSISTANT.toString()));
         user.setPassword(encryptionServicePort.encode(user.getPassword()));
 
 
-        userPersistencePort.saveWareHouseAssistantUser(user);
+        userPersistencePort.saveUser(user);
 
     }
 
+    @Override
+    public void saveClientUser(User user) {
+        if(userPersistencePort.existsByEmail(user.getEmail())){
+            throw new UserAlreadyExistException();
+        }
 
+        UserValidator.validate(user);
+        user.setRoleId(rolePersistencePort.getRoleId(RoleConstant.CLIENT.toString()));
+        user.setPassword(encryptionServicePort.encode(user.getPassword()));
+
+        userPersistencePort.saveUser(user);
+    }
 }

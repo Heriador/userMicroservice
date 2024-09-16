@@ -40,4 +40,18 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = DocumentationConstants.CODE_STATUS_201, description = DocumentationConstants.DESCRIPTION_STATUS_201, content = @Content(schema = @Schema(implementation = UserResponse.class))),
+            @ApiResponse(responseCode = DocumentationConstants.CODE_STATUS_400, description = DocumentationConstants.DESCRIPTION_STATUS_400, content = @Content),
+            @ApiResponse(responseCode = DocumentationConstants.CODE_STATUS_403, description = DocumentationConstants.DESCRIPTION_STATUS_403, content = @Content),
+            @ApiResponse(responseCode = DocumentationConstants.CODE_STATUS_409, description = DocumentationConstants.DESCRIPTION_STATUS_409, content = @Content)
+    })
+    @PreAuthorize(RestControllerConstants.HAS_ROLE_ADMIN)
+    @PostMapping(RestControllerConstants.CLIENT_RUTE)
+    @Operation(summary = DocumentationConstants.CREATE_CLIENT_USER_OPERATION_DESCIPTION)
+    public ResponseEntity<UserResponse> createClientUser(@RequestBody @Valid CreateUser createUser){
+        UserResponse user = userHandler.saveClientUser(createUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
 }
