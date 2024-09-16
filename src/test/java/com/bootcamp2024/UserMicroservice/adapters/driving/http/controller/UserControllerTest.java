@@ -46,4 +46,21 @@ class UserControllerTest {
         verify(userHandler, times(1)).saveWareHouseAssistantUser(createUser);
     }
 
+    @Test
+    void createClientUser_ValidUser_ReturnsCreatedResponse() {
+        // Arrange
+        CreateUser createUser = UserFactory.getCreateUser();
+        UserResponse userResponse =UserFactory.getUserResponse();
+
+        when(userHandler.saveClientUser(createUser)).thenReturn(userResponse);
+
+        // Act
+        ResponseEntity<UserResponse> response = userController.createClientUser(createUser);
+
+        // Assert
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(userResponse, response.getBody());
+        verify(userHandler, times(1)).saveClientUser(createUser);
+    }
+
 }

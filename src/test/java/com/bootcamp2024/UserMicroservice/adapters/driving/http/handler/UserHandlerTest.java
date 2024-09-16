@@ -52,4 +52,25 @@ class UserHandlerTest {
         verify(userServicePort, times(1)).saveWareHouseAssistantUser(user);
     }
 
+    @Test
+    void saveClientUser_ValidUser_ReturnsUserResponse() {
+        // Arrange
+        CreateUser createUser = UserFactory.getCreateUser();
+        User user = UserFactory.getUser();
+        UserResponse userResponse = UserFactory.getUserResponse();
+
+        when(userRequestMapper.toUser(createUser)).thenReturn(user);
+
+        doNothing().when(userServicePort).saveClientUser(user);
+
+        when(userResponseMapper.userToUserResponse(user)).thenReturn(userResponse);
+
+        // Act
+        UserResponse result = userHandler.saveClientUser(createUser);
+
+        // Assert
+        assertEquals(userResponse, result);
+        verify(userServicePort, times(1)).saveClientUser(user);
+    }
+
 }

@@ -4,6 +4,7 @@ import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.entity.UserEn
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.mapper.IUserEntityMapper;
 import com.bootcamp2024.UserMicroservice.adapters.driven.jpa.mysql.repository.IUserRepository;
 import com.bootcamp2024.UserMicroservice.domain.model.User;
+import com.bootcamp2024.UserMicroservice.factory.RoleFactory;
 import com.bootcamp2024.UserMicroservice.factory.UserFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,9 +40,29 @@ class UserAdapterTest {
         when(userEntityMapper.toUserEntity(user)).thenReturn(userEntity);
 
         // Act
-        userAdapter.saveWareHouseAssistantUser(user);
+        userAdapter.saveUser(user);
 
         // Assert
+        verify(userEntityMapper, times(1)).toUserEntity(user);
+        verify(userRepository, times(1)).save(userEntity);
+    }
+
+    @Test
+    void saveClientUser_ValidUser_SavesUser() {
+        // Arrange
+        User user = UserFactory.getUser();
+        user.setRoleId(RoleFactory.getClientEntity().getId());
+        UserEntity userEntity = UserFactory.getUserEntity();
+        userEntity.setRole(RoleFactory.getClientEntity());
+
+        when(userEntityMapper.toUserEntity(user)).thenReturn(userEntity);
+
+
+        // Act
+        userAdapter.saveUser(user);
+
+        // Assert
+        verify(userEntityMapper, times(1)).toUserEntity(user);
         verify(userRepository, times(1)).save(userEntity);
     }
 

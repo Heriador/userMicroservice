@@ -6,7 +6,8 @@ import com.bootcamp2024.UserMicroservice.domain.model.Role;
 public class RoleFactory {
 
     private static final Role role;
-    private static final Role watehouseAss;
+    private static final Role warehouseAss;
+    private static final Role client;
 
     static {
         role = new Role();
@@ -14,7 +15,8 @@ public class RoleFactory {
         role.setName("ADMIN");
         role.setDescription("Administrator");
 
-        watehouseAss = new Role(2L, "WAREHOUSE_ASSISTANT", "Warehouse Assistant");
+        warehouseAss = new Role(2L, "WAREHOUSE_ASSISTANT", "Warehouse Assistant");
+        client = new Role(3L, "CLIENT", "Client");
     }
 
     public static Role getRole() {
@@ -22,7 +24,11 @@ public class RoleFactory {
     }
 
     public static Role getWarehouseAss() {
-        return watehouseAss;
+        return warehouseAss;
+    }
+
+    public static Role getClient() {
+        return client;
     }
 
     public static RoleEntity getRoleEntity() {
@@ -35,9 +41,17 @@ public class RoleFactory {
 
     public static RoleEntity getWarehouseAssEntity() {
         RoleEntity roleEntity = new RoleEntity();
-        roleEntity.setId(watehouseAss.getId());
-        roleEntity.setName(watehouseAss.getName());
-        roleEntity.setDescription(watehouseAss.getDescription());
+        roleEntity.setId(warehouseAss.getId());
+        roleEntity.setName(warehouseAss.getName());
+        roleEntity.setDescription(warehouseAss.getDescription());
+        return roleEntity;
+    }
+
+    public static RoleEntity getClientEntity() {
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setId(client.getId());
+        roleEntity.setName(client.getName());
+        roleEntity.setDescription(client.getDescription());
         return roleEntity;
     }
 
