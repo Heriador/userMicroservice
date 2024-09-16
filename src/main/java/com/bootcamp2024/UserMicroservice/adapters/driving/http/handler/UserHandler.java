@@ -25,4 +25,14 @@ public class UserHandler implements IUserHandler {
 
         return userResponseMapper.userToUserResponse(user);
     }
+
+    @Override
+    public UserResponse saveClientUser(CreateUser createUser) {
+        User user = userRequestMapper.toUser(createUser);
+
+        userServicePort.saveClientUser(user);
+
+
+        return userResponseMapper.userToUserResponse(user);
+    }
 }

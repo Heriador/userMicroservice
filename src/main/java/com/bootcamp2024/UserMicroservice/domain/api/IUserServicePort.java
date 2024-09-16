@@ -5,4 +5,5 @@ import com.bootcamp2024.UserMicroservice.domain.model.User;
 public interface IUserServicePort {
     void saveWareHouseAssistantUser(User user);
 
+    void saveClientUser(User user);
 }

@@ -47,7 +47,7 @@ class UserUseCasesTest {
         // Act & Assert
         assertThrows(UserAlreadyExistException.class, () -> userUseCases.saveWareHouseAssistantUser(user));
 
-        verify(userPersistencePort, never()).saveWareHouseAssistantUser(any(User.class));
+        verify(userPersistencePort, never()).saveUser(any(User.class));
     }
 
     @Test
@@ -59,13 +59,46 @@ class UserUseCasesTest {
         when(encryptionServicePort.encode(user.getPassword())).thenReturn("encryptedPassword");
         when(rolePersistencePort.getRoleId(RoleFactory.getWarehouseAss().getName())).thenReturn(RoleFactory.getWarehouseAss().getId());
 
-        doNothing().when(userPersistencePort).saveWareHouseAssistantUser(user);
+        doNothing().when(userPersistencePort).saveUser(user);
 
         // Act
         userUseCases.saveWareHouseAssistantUser(user);
 
         // Assert
-        verify(userPersistencePort, times(1)).saveWareHouseAssistantUser(user);
+        verify(userPersistencePort, times(1)).saveUser(user);
+    }
+
+    @Test
+    void saveClientUser_UserAlreadyExists_ThrowsException() {
+        // Arrange
+        User user = UserFactory.getUser();
+        user.setRoleId(RoleFactory.getClient().getId());
+
+        when(userPersistencePort.existsByEmail(user.getEmail())).thenReturn(true);
+
+        // Act & Assert
+        assertThrows(UserAlreadyExistException.class, () -> userUseCases.saveClientUser(user));
+
+        verify(userPersistencePort, never()).saveUser(any(User.class));
+    }
+
+    @Test
+    void saveClientUser_UserDoesNotExist_SavesUser() {
+        // Arrange
+        User user = UserFactory.getUser();
+        user.setRoleId(RoleFactory.getClient().getId());
+
+        when(userPersistencePort.existsByEmail(user.getEmail())).thenReturn(false);
+        when(encryptionServicePort.encode(user.getPassword())).thenReturn("encryptedPassword");
+        when(rolePersistencePort.getRoleId(RoleFactory.getClient().getName())).thenReturn(RoleFactory.getClient().getId());
+
+        doNothing().when(userPersistencePort).saveUser(user);
+
+        // Act
+        userUseCases.saveClientUser(user);
+
+        // Assert
+        verify(userPersistencePort, times(1)).saveUser(user);
     }
 
     @Test
@@ -79,7 +112,7 @@ class UserUseCasesTest {
         assertThrows(AgeValidationException.class,() ->userUseCases.saveWareHouseAssistantUser(user));
 
         // Assert
-        verify(userPersistencePort, never()).saveWareHouseAssistantUser(user);
+        verify(userPersistencePort, never()).saveUser(user);
     }
 
     @Test
@@ -93,7 +126,7 @@ class UserUseCasesTest {
         assertThrows(EmailValidationException.class,() ->userUseCases.saveWareHouseAssistantUser(user));
 
         // Assert
-        verify(userPersistencePort, never()).saveWareHouseAssistantUser(user);
+        verify(userPersistencePort, never()).saveUser(user);
     }
 
     @Test
@@ -107,7 +140,7 @@ class UserUseCasesTest {
         assertThrows(IdentityDocumentValidationException.class,() ->userUseCases.saveWareHouseAssistantUser(user));
 
         // Assert
-        verify(userPersistencePort, never()).saveWareHouseAssistantUser(user);
+        verify(userPersistencePort, never()).saveUser(user);
     }
 
     @Test
@@ -121,7 +154,7 @@ class UserUseCasesTest {
         assertThrows(PhoneValidationException.class,() ->userUseCases.saveWareHouseAssistantUser(user));
 
         // Assert
-        verify(userPersistencePort, never()).saveWareHouseAssistantUser(user);
+        verify(userPersistencePort, never()).saveUser(user);
     }
 
 }
