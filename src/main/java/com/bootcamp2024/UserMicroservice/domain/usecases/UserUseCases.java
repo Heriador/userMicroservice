@@ -28,14 +28,10 @@ public class UserUseCases implements IUserServicePort {
 
     @Override
     public void saveWareHouseAssistantUser(User user) {
-        if(Boolean.TRUE.equals(userPersistencePort.existsByEmail(user.getEmail()))){
-            throw new UserAlreadyExistException();
-        }
 
-        UserValidator.validate(user);
+        commonUserFunc(user);
+
         user.setRoleId(rolePersistencePort.getRoleId(RoleConstant.WAREHOUSE_ASSISTANT.toString()));
-        user.setPassword(encryptionServicePort.encode(user.getPassword()));
-
 
         userPersistencePort.saveUser(user);
 
@@ -43,14 +39,21 @@ public class UserUseCases implements IUserServicePort {
 
     @Override
     public void saveClientUser(User user) {
+
+        commonUserFunc(user);
+
+        user.setRoleId(rolePersistencePort.getRoleId(RoleConstant.CLIENT.toString()));
+
+        userPersistencePort.saveUser(user);
+    }
+
+    private void commonUserFunc(User user){
         if(userPersistencePort.existsByEmail(user.getEmail())){
             throw new UserAlreadyExistException();
         }
 
         UserValidator.validate(user);
-        user.setRoleId(rolePersistencePort.getRoleId(RoleConstant.CLIENT.toString()));
         user.setPassword(encryptionServicePort.encode(user.getPassword()));
 
-        userPersistencePort.saveUser(user);
     }
 }
