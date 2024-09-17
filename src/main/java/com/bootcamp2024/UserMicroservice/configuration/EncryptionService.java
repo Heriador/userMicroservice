@@ -1,7 +1,6 @@
 package com.bootcamp2024.UserMicroservice.configuration;
 
 import com.bootcamp2024.UserMicroservice.domain.api.IEncryptionServicePort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class EncryptionService implements IEncryptionServicePort {
@@ -9,8 +8,8 @@ public class EncryptionService implements IEncryptionServicePort {
     private final PasswordEncoder passwordEncoder;
 
 
-    public EncryptionService() {
-        this.passwordEncoder = new BCryptPasswordEncoder();
+    public EncryptionService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override

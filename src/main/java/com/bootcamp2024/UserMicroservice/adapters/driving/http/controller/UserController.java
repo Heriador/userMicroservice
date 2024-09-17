@@ -46,7 +46,6 @@ public class UserController {
             @ApiResponse(responseCode = DocumentationConstants.CODE_STATUS_403, description = DocumentationConstants.DESCRIPTION_STATUS_403, content = @Content),
             @ApiResponse(responseCode = DocumentationConstants.CODE_STATUS_409, description = DocumentationConstants.DESCRIPTION_STATUS_409, content = @Content)
     })
-    @PreAuthorize(RestControllerConstants.HAS_ROLE_ADMIN)
     @PostMapping(RestControllerConstants.CLIENT_RUTE)
     @Operation(summary = DocumentationConstants.CREATE_CLIENT_USER_OPERATION_DESCIPTION)
     public ResponseEntity<UserResponse> createClientUser(@RequestBody @Valid CreateUser createUser){

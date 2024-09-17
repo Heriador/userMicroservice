@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
@@ -44,32 +45,32 @@ public class BeanConfiguration {
 
     @Bean
     public IEncryptionServicePort encryptionServicePort() {
-        return new EncryptionService();
+        return new EncryptionService(new BCryptPasswordEncoder());
     }
 
     @Bean
     public IUserServicePort userServicePort() {
-        return new UserUseCases(userPersistencePort(), encryptionServicePort(), rolPersistancePort());
+        return new UserUseCases(userPersistencePort(), encryptionServicePort(), rolPersistencePort());
     }
 
     @Bean
-    public IRolePersistencePort rolPersistancePort() {
+    public IRolePersistencePort rolPersistencePort() {
         return new RoleAdapter(roleRepository, roleEntityMapper);
     }
 
     @Bean
     public IRoleServicePort roleServicePort() {
-        return new RolUseCase(rolPersistancePort());
+        return new RolUseCase(rolPersistencePort());
     }
 
     @Bean
-    public IAuthPersistencePort authPersistancePort() {
-        return new AuthAdapter(authenticationManager, jwtService, rolPersistancePort());
+    public IAuthPersistencePort authPersistencePort() {
+        return new AuthAdapter(authenticationManager, jwtService, rolPersistencePort());
     }
 
     @Bean
     public IAuthServicePort authServicePort() {
-        return new AuthUseCase(authPersistancePort());
+        return new AuthUseCase(authPersistencePort());
     }
 
 }
